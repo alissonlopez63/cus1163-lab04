@@ -475,3 +475,20 @@ ps aux | grep Z
 - GNU C Library - Process Creation: https://www.gnu.org/software/libc/manual/html_node/Process-Creation-Concepts.html
 
 **Tip:** Use `man 2 <syscall>` for system calls and `man 3 <function>` for library functions
+
+**Analysis questions answers**
+1. When exec() is called the child's entire memory space is replaced with the new program's code,
+   stack, heap, and data.Then the old program's memory is completely discarded. The process keeps
+   the same PID, but it becomes a totally different program. 
+
+2. We need fork() to create a new process and exec() to load a new program into that process. 
+   Separating them allows that parents to modify the child's enviornment before running the new
+   program. This separation gives flexibility and control in Unix process management.
+
+3. If the parent calls exec(), it replaces itself with the new program and stops being the 
+   original program. That means the shell or executor would disappear instead of waiting for the
+   command to finish. 
+
+4. The child must call exit() because returning would cause the child to continue executing the 
+   parent's code. This could create duplicate behavior or logic errors. Calling exit() ensures the
+   child process terminates cleanly. 
